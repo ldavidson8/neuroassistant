@@ -49,6 +49,16 @@ endDateString: A string in ISO format representing the event's end date (e.g., "
 Return only the valid JSON object without extra text.
 
 Split the tasks into the user's provided timescales otherwise, provide your own for each task.`;
+
+// Helper function to get date string (e.g., "2025-04-02")
+// --- Get Current Date ---
+const today = new Date();
+const currentDateString = today.toISOString().split('T')[0]; // e.g., "2025-04-02"
+
+// --- Inject Current Date into System Prompt ---
+// Prepend the date information to the base prompt.
+const modifiedSystemPrompt = `Today's date is ${currentDateString}. Please ensure the generated schedule starts from this date (${currentDateString}).\n\n${systemPrompt}`;
+
 export async function getChatCompletions(userMessage: string) {
   const client = new AzureOpenAI({
     endpoint,
@@ -58,7 +68,7 @@ export async function getChatCompletions(userMessage: string) {
   });
   const response = await client.chat.completions.create({
     messages: [
-      { role: 'system', content: systemPrompt },
+      { role: 'system', content: modifiedSystemPrompt },
       { role: 'user', content: userMessage },
     ],
     model: deployment,
