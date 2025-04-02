@@ -40,6 +40,7 @@ export function MultiStepForm() {
     availability: initializeAvailability(),
     isExam: false,
     document: { file: null, text: '' },
+    doneByTime: '',
   });
 
   // --- Calculated Values ---

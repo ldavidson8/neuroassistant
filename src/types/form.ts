@@ -32,6 +32,7 @@ export interface FormData {
     availability: Record<DayOfWeek, DayAvailability>;
     isExam: boolean;
     document: DocumentData;
+    doneByTime: string;
 }
 
 export interface DocumentData {
