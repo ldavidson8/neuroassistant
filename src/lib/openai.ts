@@ -1,8 +1,8 @@
 import { getBearerTokenProvider, InteractiveBrowserCredential } from '@azure/identity';
 import { AzureOpenAI } from 'openai';
 
-const apiKey = '7698f644-6d20-48fc-a2cf-39ec2116007d';
 const endpoint = 'https://mango-bush-0a9e12903.5.azurestaticapps.net/api/v1';
+const apiKey = '7698f644-6d20-48fc-a2cf-39ec2116007d';
 const deployment = 'gpt-4o-mini';
 
 const credential = new InteractiveBrowserCredential({
@@ -53,9 +53,8 @@ export async function getChatCompletions(userMessage: string) {
   const client = new AzureOpenAI({
     endpoint,
     apiKey,
-    // azureADTokenProvider,
-    apiVersion: '2025-04-02',
     dangerouslyAllowBrowser: true,
+    apiVersion: '2023-05-15',
   });
   const response = await client.chat.completions.create({
     messages: [
@@ -66,5 +65,8 @@ export async function getChatCompletions(userMessage: string) {
     max_tokens: 4096,
     temperature: 0.7,
   });
-  return response;
+  for (const choices of response.choices) {
+    console.log(choices.message);
+    return choices.message.content;
+  }
 }
