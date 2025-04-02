@@ -54,10 +54,6 @@ export const AvailabilityStep: React.FC<StepProps> = ({
       ...currentAvailability,
       [day]: updatedDayData,
     });
-
-    // Enable or disable the button based on selected days
-    const selectedDays = ALL_DAYS.filter((d) => currentAvailability[d]?.selected);
-    setIsButtonDisabled(selectedDays.length === 0);
   };
 
   // Generic handler for time changes (start or end)
