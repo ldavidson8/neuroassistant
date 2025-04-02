@@ -8,12 +8,12 @@ import { Upload, FileText, Image as ImageIcon } from "lucide-react"; // More ico
 import type { StepProps } from "@/types/form"; // Adjust path
 
 // Define allowed file types (adjust as needed)
-const ALLOWED_IMAGE_TYPES = [
-    "image/jpeg",
-    "image/png",
-    "image/gif",
-    "image/webp",
-];
+// const ALLOWED_IMAGE_TYPES = [
+//     "image/jpeg",
+//     "image/png",
+//     "image/gif",
+//     "image/webp",
+// ];
 // Example for more types: const ALLOWED_TYPES = ['image/*', 'application/pdf'];
 
 export const DocumentStep: React.FC<StepProps> = ({
@@ -26,18 +26,18 @@ export const DocumentStep: React.FC<StepProps> = ({
         const file = event.target.files?.[0];
         if (file) {
             // More robust validation
-            if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-                alert(
-                    `Invalid file type. Please upload one of: ${ALLOWED_IMAGE_TYPES.map(
-                        (t) => t.split("/")[1]
-                    ).join(", ")}`
-                );
-                // Reset file input
-                if (fileInputRef.current) {
-                    fileInputRef.current.value = "";
-                }
-                return;
-            }
+            // if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+            //     alert(
+            //         `Invalid file type. Please upload one of: ${ALLOWED_IMAGE_TYPES.map(
+            //             (t) => t.split("/")[1]
+            //         ).join(", ")}`
+            //     );
+            //     // Reset file input
+            //     if (fileInputRef.current) {
+            //         fileInputRef.current.value = "";
+            //     }
+            //     return;
+            // }
             // Optional size limit (e.g., 5MB)
             // if (file.size > 5 * 1024 * 1024) {
             //   alert("File size exceeds 5MB limit.");
@@ -81,7 +81,7 @@ export const DocumentStep: React.FC<StepProps> = ({
                 ref={fileInputRef}
                 onChange={handleFileChange}
                 className='hidden'
-                accept={ALLOWED_IMAGE_TYPES.join(",")} // Set accepted types dynamically
+                // accept={ALLOWED_IMAGE_TYPES.join(",")} // Set accepted types dynamically
             />
 
             {/* File Upload Area */}
@@ -116,7 +116,7 @@ export const DocumentStep: React.FC<StepProps> = ({
                             )}
                             {!formData.document.file && (
                                 <span className='text-xs text-muted-foreground'>
-                                    Max 5MB. Allowed types: JPG, PNG, GIF, WEBP
+                                    Max 5MB.
                                 </span>
                             )}
                         </div>

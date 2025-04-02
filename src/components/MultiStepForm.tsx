@@ -12,6 +12,8 @@ import { DocumentStep } from '@/components/steps/DocumentStep'; // Adjust path
 import { ExamStep } from '@/components/steps/ExamStep'; // Adjust path
 import type { DayAvailability, DayOfWeek, FormData, FormStep } from '@/types/form'; // Adjust path
 import { ALL_DAYS } from '@/types/form'; // Adjust path
+import { getChatCompletions } from '@/lib/openai';
+import { convertDocxToText } from '@/lib/exportDocxToText';
 
 // --- Step Definitions using Components ---
 const formSteps: FormStep[] = [
@@ -67,17 +69,27 @@ export function MultiStepForm() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log('Form Submitted:', JSON.stringify(formData, null, 2)); // Pretty print
     alert('Form submitted! Check the console for the final data structure.');
     // TODO: Send data to your backend or perform desired action
-    // Optional: Reset form after submission
-    // setCurrentStep(0);
-    // setFormData({
-    //     availability: initializeAvailability(),
-    //     isExam: false,
-    //     document: { file: null, text: "" },
-    // });
+
+    if (!formData.document.file) {
+      console.error('No document file provided.');
+      return;
+    }
+
+    if (formData.document.file.type !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+      console.error('Invalid file type. Please upload a .docx file.');
+      return;
+    }
+
+    const fileText = await convertDocxToText(formData.document.file);
+
+    await getChatCompletions(fileText + formData.document.text).then((response) => {
+      console.log('ChatGPT Response:', response);
+      alert('ChatGPT response received! Check the console for details.');
+    });
   };
 
   // This function is passed down to children

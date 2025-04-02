@@ -1,12 +1,15 @@
+import { getBearerTokenProvider, InteractiveBrowserCredential } from '@azure/identity';
 import { AzureOpenAI } from 'openai';
-import { DefaultAzureCredential, getBearerTokenProvider } from '@azure/identity';
-import 'dotenv/config';
 
-const endpoint = process.env.AZURE_OPENAI_ENDPOINT;
-const apiKey = process.env.AZURE_AI_KEY;
+const apiKey = '7698f644-6d20-48fc-a2cf-39ec2116007d';
+const endpoint = 'https://mango-bush-0a9e12903.5.azurestaticapps.net/api/v1';
 const deployment = 'gpt-4o-mini';
 
-const credential = new DefaultAzureCredential();
+const credential = new InteractiveBrowserCredential({
+  additionallyAllowedTenants: ['common'],
+  clientId: '7698f644-6d20-48fc-a2cf-39ec2116007d',
+  tenantId: '7698f644-6d20-48fc-a2cf-39ec2116007d',
+});
 const scope = 'https://cognitiveservices.azure.com/.default';
 const azureADTokenProvider = getBearerTokenProvider(credential, scope);
 
@@ -50,7 +53,9 @@ export async function getChatCompletions(userMessage: string) {
   const client = new AzureOpenAI({
     endpoint,
     apiKey,
-    azureADTokenProvider,
+    // azureADTokenProvider,
+    apiVersion: '2025-04-02',
+    dangerouslyAllowBrowser: true,
   });
   const response = await client.chat.completions.create({
     messages: [
